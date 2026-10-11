@@ -50,10 +50,10 @@ that differs from "Expect".
 
 ### Setting and Settings window (3.1)
 
-1. `./build/omaframe --studio`, open Settings.
+1. `./build/omaframe --studio`, open Settings. (works)
 2. **Skip the finish chooser** sits under **Save screenshots automatically**,
-   with a note that the secrets prompt is skipped.
-3. Turn it on, quit (`pkill -x omaframe`), open Settings again.
+   with a note that the secrets prompt is skipped. (works, but where is that setting being saved? not in bindings.lua with the rest)
+3. Turn it on, quit (`pkill -x omaframe`), open Settings again. (works)
 
 Expect: still on.
 
@@ -64,42 +64,42 @@ With the setting on:
 1. `./build/omaframe --capture`, click a window.
 
    Expect: no chooser. **Screenshot copied** notification appears, and the
-   clipboard holds the screenshot with the finish you picked last.
+   clipboard holds the screenshot with the finish you picked last. (this works, but the idea is to always use the raw finish first.)
 2. Same, but drag an area, then once more pressing F.
 
-   Expect: the same.
+   Expect: the same. (works, same note as before)
 3. With **Save screenshots automatically** on, expect a new PNG in the
-   screenshot folder. With it off, expect no new file.
+   screenshot folder. With it off, expect no new file. (works)
 4. Click the notification.
 
    Expect: the editor opens with the screenshot, its finish selectable, and Pin
-   available.
+   available. (works)
 5. `./build/omaframe --capture`, press Esc while selecting.
 
-   Expect: nothing copied or saved.
+   Expect: nothing copied or saved (works).
 6. `./build/omaframe --screen` and `./build/omaframe --repeat`.
 
-   Expect: both finish without the chooser.
+   Expect: both finish without the chooser (works).
 
 ### Overrides (3.2, 5.1, 5.2)
 
-1. Setting on: `./build/omaframe --capture --chooser`, click a window.
+1. Setting on: `./build/omaframe --capture --chooser`, click a window .
 
    Expect: the chooser appears. Read its title, hint and footer. Report any
-   wording that is wrong while the setting is on (3.2).
+   wording that is wrong while the setting is on (3.2) (works).
 2. Setting off: `./build/omaframe --capture --direct`, click a window.
 
-   Expect: finishes without the chooser.
+   Expect: finishes without the chooser (works).
 3. Right after that, with the setting still off: `./build/omaframe --capture`.
 
-   Expect: the chooser appears. The override applied to one capture only.
+   Expect: the chooser appears. The override applied to one capture only (works).
 4. `./build/omaframe --capture --delay 3 --direct`.
 
-   Expect: countdown, then a direct finish.
+   Expect: countdown, then a direct finish (works).
 5. A running instance honors the flags: start `./build/omaframe --studio`,
    then from a terminal run `./build/omaframe --capture --direct`.
 
-   Expect: finishes without the chooser.
+   Expect: finishes without the chooser (works).
 6. These print an error and exit with status 1 (`echo $?`):
 
    ```sh
@@ -141,9 +141,9 @@ Setting on, nothing running.
 
 Setting on: `./build/omaframe --scroll`, click a scrollable window.
 
-Expect: the chooser appears with the stitched image.
+Expect: the chooser appears with the stitched image (kind of, the raw chooser does not shows the full image, but this seems to be a bug in main, not introduced).
 
-### Chooser shortcut
+### Chooser shortcut (works)
 
 This step edits `~/.config/hypr/bindings.lua`. Omaframe backs it up first, next
 to the original as `bindings.lua.bak.omaframe-…`.
