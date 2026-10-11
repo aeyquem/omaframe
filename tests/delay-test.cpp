@@ -18,6 +18,7 @@
 #include <QQmlEngine>
 #include <QQuickWindow>
 #include <QSemaphore>
+#include <QScopeGuard>
 #include <QSettings>
 #include <QSignalSpy>
 #include <QStandardPaths>
@@ -919,7 +920,12 @@ private slots:
   void skipChooserSettingLeavesBindingsAlone() {
     QTemporaryDir config;
     QVERIFY(config.isValid());
+    const bool hadPrevious = qEnvironmentVariableIsSet("XDG_CONFIG_HOME");
     const QByteArray previous = qgetenv("XDG_CONFIG_HOME");
+    const auto restore = qScopeGuard([&] {
+      if (hadPrevious) qputenv("XDG_CONFIG_HOME", previous);
+      else qunsetenv("XDG_CONFIG_HOME");
+    });
     qputenv("XDG_CONFIG_HOME", QFile::encodeName(config.path()));
     const QString hypr = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/hypr";
     QVERIFY(hypr.startsWith(config.path()));
@@ -944,7 +950,6 @@ private slots:
     QCOMPARE(bindings.readAll(), user);
     bindings.close();
     QCOMPARE(QFileInfo(bindings).lastModified(), modified);
-    qputenv("XDG_CONFIG_HOME", previous);
   }
   void selectionDelayRules() {
     AudioLevels audioLevels;
