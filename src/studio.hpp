@@ -125,7 +125,7 @@ class Studio final : public QObject {
   Q_PROPERTY(bool keepOriginals READ keepOriginals WRITE setKeepOriginals NOTIFY changed)
   Q_PROPERTY(bool autoSaveScreenshots READ autoSaveScreenshots WRITE setAutoSaveScreenshots NOTIFY changed)
   /** Finish a window, area or display screenshot as soon as it is selected,
-   *  with the last-picked finish, instead of showing the finish chooser. */
+   *  in Raw, instead of showing the finish chooser. */
   Q_PROPERTY(bool skipChooser READ skipChooser WRITE setSkipChooser NOTIFY changed)
   Q_PROPERTY(bool editing READ editing WRITE setEditing NOTIFY changed)
   /** False until the first-run welcome has been seen or dismissed. */
@@ -275,6 +275,7 @@ public:
     cancelPendingAccept();
     m_chooserOverride = CaptureRequest::ChooserOverride::Default;
     m_direct = false;
+    restoreRememberedStyle();
     m_quickMode = false;
     m_recordingSelection = false;
     m_scrollSelection = false;
@@ -402,14 +403,17 @@ private:
   void beginDelayedCapture(int seconds, bool fromSelection);
   void acquireCapture(bool region, int monitor, bool repeat,
                       quint64 delayGeneration);
-  /** A screenshot is selected: finish it directly or show the chooser. */
+  /** A screenshot is selected: finish it directly, in Raw, or show the
+   *  chooser. */
   void selected();
+  /** Back to the remembered finish after a direct screenshot used Raw. */
+  void restoreRememberedStyle();
   /** A direct screenshot that could not be saved or copied shows the chooser
    *  once, with its error and retry. */
   void showChooserIfDirectFailed();
   CaptureRequest::ChooserOverride m_chooserOverride =
       CaptureRequest::ChooserOverride::Default;
-  bool m_direct = false;
+  bool m_direct = false, m_directRaw = false;
   /** False when the current draft could not be saved first. */
   bool loadImage(QImage image, QString name, bool demo);
   void scheduleRender();

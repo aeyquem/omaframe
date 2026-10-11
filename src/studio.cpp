@@ -36,6 +36,7 @@
 #include <QWindow>
 #include <QtConcurrent>
 #include <algorithm>
+#include <utility>
 #include <cmath>
 #include <cstdlib>
 #include <optional>
@@ -1394,11 +1395,23 @@ void Studio::finishSelection(const QString &monitor, double x1, double y1,
 void Studio::selected() {
   m_quickState = "choosing";
   m_direct = CaptureRequest::skipsChooser(skipChooser(), m_chooserOverride);
-  emit changed();
-  if (m_direct)
-    chooseFinish(style());
-  else
+  if (!m_direct) {
+    emit changed();
     emit chooserRequested();
+    return;
+  }
+  // Raw for this screenshot only. The chooser keeps the remembered finish,
+  // so it is not persisted.
+  constexpr int raw = 8;
+  m_options.style = raw;
+  m_directRaw = true;
+  emit changed();
+  chooseFinish(raw);
+}
+void Studio::restoreRememberedStyle() {
+  if (!std::exchange(m_directRaw, false))
+    return;
+  m_options.style = std::clamp(QSettings().value("style", 0).toInt(), 0, 8);
 }
 void Studio::showChooserIfDirectFailed() {
   if (!m_direct || (m_quickState != "failed" && m_quickState != "copy-failed"))

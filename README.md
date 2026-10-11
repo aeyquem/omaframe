@@ -63,8 +63,8 @@ the draft with your latest edits.
 Most screenshots don't need a new finish? Turn on **Skip the finish chooser**
 in Settings, next to **Save screenshots automatically**. Press Print Screen,
 click a window, drag an area or press F, and the screenshot is copied right
-away with the finish you picked last, and saved too when automatic saving is
-on. The **Screenshot copied** notification confirms it; click it to change the
+away in Raw, without a frame, and saved too when automatic saving is on. The
+finish you picked in the chooser stays remembered for the chooser. The **Screenshot copied** notification confirms it; click it to change the
 finish, pin it or mark it up in the editor. The chooser's **Hide possible
 secrets** prompt is skipped as well, so look before you paste. Scrolling
 captures still end in the chooser, and if saving or copying fails the chooser

@@ -686,7 +686,7 @@ ApplicationWindow {
                     }
                     Text {
                         Layout.fillWidth: true
-                        text: "A window, area or display screenshot finishes as soon as it is selected, with the last finish you picked. Click its notification to edit it. The chooser's prompt to hide possible secrets is skipped too. Scrolling captures always show the chooser."
+                        text: "A window, area or display screenshot finishes as soon as it is selected, in Raw, without a frame. Click its notification to pick a finish or edit it. The chooser's prompt to hide possible secrets is skipped too. Scrolling captures always show the chooser."
                         color: theme.muted
                         font.family: theme.fontFamily
                         font.pixelSize: 11

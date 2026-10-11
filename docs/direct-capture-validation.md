@@ -167,3 +167,17 @@ The new line runs this build. Remove it from Omaframe's block in
 
 For each section, say whether it passed. For anything that did not, give what
 you did and what happened. Include the `ctest` summary lines.
+## Results (2026-10-11)
+
+All checks above passed on Omarchy, including the ones without an inline note:
+the two rejected commands exit with status 1, both failures open the chooser
+with a working retry, and `ctest` passes. Follow-ups from the notes:
+
+- A direct capture now uses the Raw finish instead of the last-picked one. The
+  chooser keeps its remembered finish. This came after the hands-on run and is
+  covered by the `quick-copy` suite (19 of 19 headless suites pass).
+- The setting is stored in `~/.config/Omaframe/Omaframe.conf` as
+  `screenshot/skipChooser`, with Omaframe's other settings. `bindings.lua`
+  holds only key bindings and is never changed by the setting.
+- Scroll capture's Raw preview not showing the whole stitched image also
+  happens on `main`, so it is not part of this change.

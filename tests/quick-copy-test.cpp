@@ -220,21 +220,25 @@ private slots:
     Studio studio(&store, false);
     studio.setAutoSaveScreenshots(autoSave);
     studio.setSkipChooser(true);
-    studio.setStyle(3); // The last-picked finish.
+    studio.setStyle(3); // The finish picked last in the chooser.
     QSignalSpy chooser(&studio, &Studio::chooserRequested);
     QSignalSpy dismissed(&studio, &Studio::dismissRequested);
     select(studio);
     QTRY_COMPARE_WITH_TIMEOUT(dismissed.count(), 1, 15000);
     QCOMPARE(chooser.count(), 0);
     QCOMPARE(studio.quickState(), autoSave ? QString("done") : QString("copied"));
-    QCOMPARE(studio.style(), 3);
     QCOMPARE(studio.finishNotice().summary, QString("Screenshot copied"));
+    // A direct screenshot is Raw: exactly the selection, no frame.
+    QCOMPARE(studio.style(), 8);
     const QImage copied(clipboard());
-    QVERIFY(!copied.isNull());
-    // The finish was applied: the copy is larger than the selection.
-    QVERIFY(copied.width() > studio.sourceSize().width());
+    QCOMPARE(copied.size(), studio.sourceSize());
+    // The chooser's remembered finish is untouched.
+    QCOMPARE(QSettings().value("style").toInt(), 3);
+    studio.leaveQuickMode();
+    QCOMPARE(studio.style(), 3);
     if (autoSave) {
       QVERIFY(QFileInfo::exists(studio.savedPath()));
+      QCOMPARE(QImage(studio.savedPath()).size(), copied.size());
       QCOMPARE(contents(clipboard()), contents(studio.savedPath()));
     } else
       QVERIFY(!QDir(temp.filePath("output")).exists());
@@ -367,6 +371,9 @@ private slots:
     QCOMPARE(chooser.count(), 1);
     QCOMPARE(studio.quickState(), failure == "copy" ? QString("copied") : QString("done"));
     QVERIFY(!QImage(clipboard()).isNull());
+    QCOMPARE(studio.style(), 8);
+    studio.leaveQuickMode();
+    QCOMPARE(studio.style(), 0); // The remembered default, not Raw.
   }
   void directCaptureReopensWithItsFinish() {
     ImageStore store;
@@ -387,7 +394,7 @@ private slots:
     QCOMPARE(editor.count(), 1);
     QCOMPARE(chooser.count(), 0);
     QCOMPARE(studio.quickState(), QString("editing"));
-    QCOMPARE(studio.style(), 3);
+    QCOMPARE(studio.style(), 8); // Its own finish, Raw.
     QCOMPARE(studio.sourceSize(), snapshot.original.size());
     // Its finish can still be changed, and Pin is available.
     studio.setStyle(5);

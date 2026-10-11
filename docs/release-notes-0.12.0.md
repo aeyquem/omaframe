@@ -4,8 +4,9 @@ Screenshots can now skip the finish chooser.
 
 - **Skip the finish chooser.** Turn it on in Settings, next to Save
   screenshots automatically. A window, area or whole-display screenshot is
-  copied as soon as you select it, with the finish you picked last, and saved
-  too when automatic saving is on. The Screenshot copied notification
+  copied as soon as you select it, in Raw without a frame, and saved too when
+  automatic saving is on. The finish you picked in the chooser stays
+  remembered for the chooser. The Screenshot copied notification
   confirms it, and clicking it opens the editor, where the finish, Pin and
   marks are still available. The chooser's Hide possible secrets prompt is
   skipped too, so look before you paste. Scrolling captures still end in the
